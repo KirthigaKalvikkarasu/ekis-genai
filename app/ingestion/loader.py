@@ -68,4 +68,4 @@ class DocumentLoader:
 # Testing Lines
 # if __name__ == "__main__":
 #     loader = DocumentLoader()
-#     print(loader.load("/Users/kirthiga.kalvikkarasu/Downloads/Rev_Recon_User_Guide.pdf")[:500])
+#     print(loader.load("Rev_Recon_User_Guide.pdf")[:500])
