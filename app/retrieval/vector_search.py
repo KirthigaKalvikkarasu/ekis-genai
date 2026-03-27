@@ -1,36 +1,32 @@
-from typing import List, Dict
+# app/retrieval/vector_search.py
+
+import faiss
 import numpy as np
+from typing import List, Dict
 
 
 class VectorSearchEngine:
-    """
-    Simple in-memory vector search engine.
-    Replace this with OpenSearch / Pinecone in production.
-    """
-
     def __init__(self, embeddings: List[List[float]], records: List[Dict]):
-        self.embeddings = np.array(embeddings)
         self.records = records
 
-    def search(
-        self,
-        query_embedding: List[float],
-        top_k: int = 5
-    ) -> List[Dict]:
-        query_vec = np.array(query_embedding)
+        self.embeddings = np.array(embeddings).astype("float32")
+        dim = self.embeddings.shape[1]
 
-        # Cosine similarity
-        norms = np.linalg.norm(self.embeddings, axis=1) * np.linalg.norm(query_vec)
-        scores = np.dot(self.embeddings, query_vec) / norms
+        self.index = faiss.IndexFlatL2(dim)
+        self.index.add(self.embeddings)
 
-        top_indices = scores.argsort()[-top_k:][::-1]
+    def search(self, query_embedding: List[float], top_k: int = 5):
+
+        query_vec = np.array([query_embedding]).astype("float32")
+
+        distances, indices = self.index.search(query_vec, top_k)
 
         results = []
-        for idx in top_indices:
+        for i, idx in enumerate(indices[0]):
             results.append({
                 "text": self.records[idx]["text"],
                 "metadata": self.records[idx]["metadata"],
-                "score": float(scores[idx]),
+                "score": float(distances[0][i]),
                 "source": "vector"
             })
 

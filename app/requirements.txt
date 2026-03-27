@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+boto3
+numpy
+rank-bm25
+sentence-transformers
+langchain-text-splitters
+pymupdf
+python-docx
+beautifulsoup4
