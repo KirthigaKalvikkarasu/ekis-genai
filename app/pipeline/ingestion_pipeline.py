@@ -50,19 +50,19 @@ class IngestionPipeline:
         Process a document and return index-ready records.
         """
 
-        # 1️⃣ Load document
+        # Load document
         text = self.loader.load(file_path)
 
-        # 2️⃣ Build document-level metadata
+        # Build document-level metadata
         doc_metadata = build_document_metadata(file_path)
 
-        # 3️⃣ Chunk document
+        # Chunk document
         chunks = self.chunker.chunk(text)
 
         if not chunks:
             raise ValueError("No valid chunks generated")
 
-        # 4️⃣ Generate embeddings
+        # Generate embeddings
         embeddings = self.embedder.embed(chunks)
 
         if len(embeddings) != len(chunks):
@@ -70,7 +70,7 @@ class IngestionPipeline:
 
         records = []
 
-        # 5️⃣ Combine everything
+        # Combine everything
         for idx, (chunk, vector) in enumerate(zip(chunks, embeddings)):
 
             # Chunk metadata
