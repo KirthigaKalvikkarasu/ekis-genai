@@ -6,10 +6,11 @@ from app.llm.generator import LLMGenerator
 from app.llm.guardrails import validate_response
 
 router = APIRouter()
+file_location = "/Users/kirthiga.kalvikkarasu/Projects/ekis-genai/app/tests/sample_document.pdf"
 
 # Initialize once (simulate pre-indexed data)
 ingestion_pipeline = IngestionPipeline()
-records = ingestion_pipeline.run("sample.pdf")
+records = ingestion_pipeline.run(file_location)
 
 retrieval_pipeline = RetrievalPipeline(records)
 generator = LLMGenerator()
